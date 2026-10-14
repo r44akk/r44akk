@@ -89,6 +89,8 @@
   .items .row-title { display: block; }
   .items .row-note { display: block; margin-top: 2px; font-weight: 400; font-size: 13.5px; color: var(--ink-soft); }
   .items .static { padding: 13px 14px; border-radius: 14px; border: 1.5px dashed var(--line); font-weight: 600; font-size: 15.5px; }
+  .items a.video-link { margin-top: 6px; justify-content: center; background: transparent; border: 1.5px solid var(--ink); font-size: 14px; padding: 10px 14px; }
+  .items a.video-link:hover { background: var(--ink); color: var(--bg); }
   .price { flex: none; font-weight: 400; color: var(--ink-soft); font-size: 14px; }
   .empty { padding: 0 22px 18px; margin: 0; color: var(--ink-soft); font-size: 14px; }
 
@@ -136,32 +138,32 @@ const SOCIALS = {
 // Added automatically to every amazon.* link below
 const AMAZON_TAG = "rak0d69-21";
 
-// Add products by copying a line. "note" is optional. Leave url empty for an item with no link yet.
+// Add products by copying a line. "note" is optional. Leave url empty for an item with no link yet. Add video: "https://..." to show a "Watch the video" button under an item.
 const CATEGORIES = [
   {
     title: "Rak's Room",
     blurb: "Desk, office and room setup",
     tint: "var(--sage)",
     items: [
-      { title: "Electric standing desk", note: "Electric height-adjustable standing desk for the home office.", url: "https://www.amazon.co.uk/dp/B07K414CSX?tag=rak0d69-21" },
-      { title: "Wall panelling", note: "Adds texture to the room.", url: "https://www.amazon.co.uk/dp/B0CBZ2RKBS?tag=rak0d69-21" },
-      { title: "Wireless charger stand", note: "Anker MagGo 3-in-1 Qi2 15W magnetic charging dock.", url: "https://www.amazon.co.uk/dp/B0DGXKXKLC?tag=rak0d69-21" },
-      { title: "Monitor arm", note: "Adjustable arm that frees up desk space.", url: "https://link.amazon/B0cRoOG4H?tag=rak0d69-21" },
-      { title: "Keyboard (alternative)", note: "YUNZII IF68 wireless mechanical keyboard.", url: "https://www.amazon.co.uk/dp/B0H296TJ3T?tag=rak0d69-21" },
-      { title: "Speaker", note: "The speaker on my desk.", url: "https://link.amazon/B06AXFgdE?tag=rak0d69-21" },
-      { title: "Rug (alternative)", note: "ORINOVA faux fur washable rug.", url: "https://www.amazon.co.uk/dp/B0BTDGN8X7?tag=rak0d69-21" },
-      { title: "Desk mat", note: "Sits under the keyboard and mouse.", url: "https://link.amazon/B01GAEhtx?tag=rak0d69-21" },
-      { title: "Bonsai tree for desk", note: "Small bonsai for the desk.", url: "https://link.amazon/B00h1khIe?tag=rak0d69-21" },
-      { title: "3-way barber mirror", note: "For grooming.", url: "https://link.amazon/B00h1khIe?tag=rak0d69-21" },
-      { title: "Lightshade", note: "The lightshade used in this room.", url: "https://link.amazon/B0053qGOX?tag=rak0d69-21" },
-      { title: "Plant", note: "Used to decorate the room.", url: "https://link.amazon/B0gF7WQMd?tag=rak0d69-21" },
-      { title: "Storage bed", note: "Bed frame with built-in storage.", url: "https://link.amazon/B08K1dyGS?tag=rak0d69-21" },
-      { title: "Small plant", note: "A smaller plant for the desk or shelf.", url: "https://link.amazon/B0bSgIjN8?tag=rak0d69-21" },
-      { title: "Google Nest speaker", note: "Google Nest smart speaker in light grey.", url: "https://www.amazon.co.uk/dp/B07THN6736?tag=rak0d69-21" },
-      { title: "Philips TV", note: "Philips 50 inch Ambilight TV in black.", url: "https://www.amazon.co.uk/dp/B0HLLB43R5?tag=rak0d69-21" },
+      { title: "Electric standing desk", note: "Electric height-adjustable standing desk for the home office.", url: "https://www.amazon.co.uk/dp/B07K414CSX?th=1&linkCode=ll2&tag=rak0d69-21&linkId=e73e23cc095cf1c4ba0e1df1240dd065&ref_=as_li_ss_tl" },
+      { title: "Wall panelling", note: "Adds texture to the room.", url: "https://www.amazon.co.uk/dp/B0CBZ2RKBS?th=1&linkCode=ll2&tag=rak0d69-21&linkId=6966e85b99b464dc227387a128e29558&ref_=as_li_ss_tl" },
+      { title: "Wireless charger stand", note: "Anker MagGo 3-in-1 Qi2 15W magnetic charging dock.", url: "https://www.amazon.co.uk/dp/B0DGXKXKLC?&linkCode=ll2&tag=rak0d69-21&linkId=726a87221842e28c900e9730e0355ef3&ref_=as_li_ss_tl" },
+      { title: "Monitor arm", note: "Adjustable arm that frees up desk space.", url: "https://www.amazon.co.uk/dp/B0F1SPDTLP?_encoding=UTF8&th=1&ascsubtag=srctok-27ca33cdcad2a5c2&btn_type=ss&btn_ref=srctok-27ca33cdcad2a5c2&linkCode=ll2&tag=rak0d69-21&linkId=c2b43107a8f2af32d0d19eea9fd3c6a9&ref_=as_li_ss_tl" },
+      { title: "Keyboard (alternative)", note: "YUNZII IF68 wireless mechanical keyboard.", url: "https://www.amazon.co.uk/dp/B0H296TJ3T?th=1&linkCode=ll2&tag=rak0d69-21&linkId=b110f789ec393c4138e73fb87e1d8814&ref_=as_li_ss_tl" },
+      { title: "Speaker", note: "The speaker on my desk.", url: "https://www.amazon.co.uk/CREATIVE-Speakers-SmartComms-Bluetooth-Computers/dp/B08ZCRHT7N?crid=37PMK90U5C8LR&dib=eyJ2IjoiMSJ9.P3-bWLhdsix9Ri9aTNtdHqmd_YRS-a98u3HQ1sh7TV6JBf7cLpw9pEgl9PBP8yCcCXwQlOTf5UjpJL0MD_y7v3bsVVfKV8ZAEYdqFCyc5dGX2p4KhCLB9PXsIBiUGh4qMx2Uz9DeK9yCCMhR_1EogRsvoxaF-bFl7bGHPon2DtdM3tbEZ0h0F-1Vltc-gHUbf8hN4IlOAKCnWUKp6IdHBKIMp5_caFdBSkyJaQTRmICiGWnBXVMOzX3vDlFi97LjgMDiozBuVQdHwj_t08yOEa5wCT4m-SkaVM2Oxdhcrs0.QtzT0GeJw_h7p_NJNvBEyzlAfZJ4r-AkuIfobm-Bj_Q&dib_tag=se&keywords=creative+t80&qid=1791283794&s=electronics&sprefix=creative+t8%2Celectronics%2C112&sr=1-3&ascsubtag=srctok-5b90dfd07e2fb786&btn_type=ss&btn_ref=srctok-5b90dfd07e2fb786&linkCode=ll2&tag=rak0d69-21&linkId=c4f95c5496e800670744c0c7b8b8291c&ref_=as_li_ss_tl" },
+      { title: "Rug (alternative)", note: "ORINOVA faux fur washable rug.", url: "https://www.amazon.co.uk/dp/B0BTDGN8X7?th=1&linkCode=ll2&tag=rak0d69-21&linkId=debd28d3a67949ba97b6218217d9fb09&ref_=as_li_ss_tl" },
+      { title: "Desk mat", note: "Sits under the keyboard and mouse.", url: "https://www.amazon.co.uk/Logitech-Desk-Mat-Multifunctional-Spill-resistant/dp/B07W5JK3Z2?crid=1GREAJ93FJ9YK&dib=eyJ2IjoiMSJ9.4stEcPBz0oEiA8y2ZsvwBvaXgSEVVoefbZEksQTgZVU6I4hHJ7w8N_CP8TyBATKSL25VN21r1upACQHVYyZGfqj21hrQSBjabh_9QWh_fQLb5AiR3GUVEvySkg2Yl86ZeSLle3NmmrntIGx58ZCYeXXYfqrpaHgydX09rqIHyQ-bR1xTGFXsDuE0LVu8b_vuyp40NQjK8LAyVHrUDDNHycJ_weQj6nB7Tyh2F93x-o0.9o2sSKJu4Zy_g6k3-kuFmN5jie1oXLkg8Krju03hErQ&dib_tag=se&keywords=logitech%2Bdesk%2Bmat&qid=1791283942&sprefix=logitech%2Bdesk%2Bma%2Caps%2C135&sr=8-1&th=1&ascsubtag=srctok-714c8a61ff5d9167&btn_type=ss&btn_ref=srctok-714c8a61ff5d9167&linkCode=ll2&tag=rak0d69-21&linkId=06f9c8f032ba279a6a0ec83fc6818fd5&ref_=as_li_ss_tl" },
+      { title: "Bonsai tree for desk", note: "Small bonsai for the desk.", url: "https://www.amazon.co.uk/Artificial-Bonsai-Simulation-Display-Ornaments/dp/B09X38R6MJ?crid=U407QP8YH3DT&dib=eyJ2IjoiMSJ9.9wKAi8Jq3lYlDwWdHbK21J3rOeeQMF6M6EBP1wD4RmdluRXX7VWr8cPT0wq5JippUD7TWFCKkIjeMCRjlndpbi43LzFQc9jPsdbOruVPKQPqAKZ_Hq6QZgf87YjDqHfZWkaJ4_RbVCOdSNXNYWlLFStEms6G62HFaPWrQIlk6LGIfZ_FHTP0dK_e0a_5Dqmj9mnZ3R7nGYBLs2AChic7WojtdPmZuIrssUvqZ_TaAmyPu3vHf5JHs66uEh3Z5XKbK0fYKREJg_JyPYk4PZDVV71YSViOeOI0ZyGSEG3G2YE.xLEhu1Cqkjx4QppHosC39z5mQFvm8IfMCV2g-yqWhRE&dib_tag=se&keywords=plant%2Bpink&qid=1791284032&s=kitchen&sprefix=plant%2Bpink%2B%2Ckitchen%2C102&sr=1-5&th=1&ascsubtag=srctok-6bc94098b1c20aeb&btn_type=ss&btn_ref=srctok-6bc94098b1c20aeb&linkCode=ll2&tag=rak0d69-21&linkId=4c457f5e16171546914d5f092f89b95f&ref_=as_li_ss_tl" },
+      { title: "3-way barber mirror", note: "For grooming.", url: "https://www.amazon.co.uk/Vanexiss-Way-Mirror-Adjustable-Retractable/dp/B0BXD6H8QM?crid=2C63FRZP8M121&dib=eyJ2IjoiMSJ9.5f2NIsw9NNfchn--PgqHeZAK1l_TtamPNxTR4UfU0zsW_3ZySyj3MdMBbEa22gX5V0lXOF1KRoFWQaUtnK9wYxpax22zA5iXOvTPKUmawbw7osudQza7iaKftCDNCmgkkA3IwgGMTD3-J2Nkc5z9Ehl33Qk4GJZNk1N8V2gxx8XsqkXkeTd3Yrh6QesMxD5J_40l3O8dIZHIavyzwFnZBCR-6SjY382rKhTh7XgKDcIeT0q4MLISNrFlqQsAlYDk2tKAohSFgmKWA8_aybS0qEUByNZbewzshr8jvVHO6B8.gtkc83NFQocWsQ4JiM8nCr2bwu3DMRSOKgp39gMgKBw&dib_tag=se&keywords=3%2Bway%2Bmirror%2Bbarbering%2Bvanexis&qid=1791974055&s=kitchen&sprefix=3%2Bway%2Bmirror%2Bbarbering%2Bvanexi%2Ckitchen%2C104&sr=1-2-spons&aref=V2voLdFgmD&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1&linkCode=ll2&tag=rak0d69-21&linkId=1f0ffcc4f5b21016412fc09a01467841&ref_=as_li_ss_tl" },
+      { title: "Lightshade", note: "The lightshade used in this room.", url: "https://www.amazon.co.uk/Frideko-Tier-Light-Shade-Ceiling/dp/B0BS3GVZN7?crid=3TKF0POWQ24S9&dib=eyJ2IjoiMSJ9.ltDF9RedZlE5BTx9X4m9IKNQ1n57OxaPJK7ueovV2bOxRhB333121psFtOhrjYzC5YUMdFv7j2r-9cxKpMqbFon843lqyLLzZibyVkeAaDksK0Of-q-nNgH8GAFMsxKPEKZQLO-PA6QmWf3_P08B9BDRZxhjGvKXaIpxJKfgmu7ttq6k7K5APDcKQa92coEx0nqGGxhItuGubIga_pbAXe8xrlceTTbqdz9AXdJNIs-0ODywKdvzbVvEgzc7hJEMUV5S-THWNZBT-dr2QPF0sZ-m1BQjmxNN1VzZkfEAtp4.OMBCOZEQSN3WW1PuHTHva1m7K3r56kOU39nUcwK63LI&dib_tag=se&keywords=freudko%2Bhome%2Bshade&qid=1791284135&s=kitchen&sprefix=fruedko%2Bhome%2Bshad%2Ckitchen%2C107&sr=1-1&th=1&ascsubtag=srctok-3234968cd69a3611&btn_type=ss&btn_ref=srctok-3234968cd69a3611&linkCode=ll2&tag=rak0d69-21&linkId=fed22e712f9860683671561fe93bf3e6&ref_=as_li_ss_tl" },
+      { title: "Plant (alternative)", note: "Used to decorate the room.", url: "https://www.amazon.co.uk/dp/B0DDTRRLQC?pd_rd_i=B0DDTRRLQC&pd_rd_w=bax3r&content-id=amzn1.sym.67a7787e-69bd-4913-9670-239f61f2c206&pf_rd_p=67a7787e-69bd-4913-9670-239f61f2c206&pf_rd_r=4KE4XJAXHTQDNWG3C5RH&pd_rd_wg=M5ui3&pd_rd_r=db0d2e61-86e1-4dfd-a0a2-57209b08f12c&s=kitchen&aref=EyX0kGZEsD&sp_csd=d2lkZ2V0TmFtZT1zcF9kZXRhaWw&th=1&ascsubtag=srctok-64d1446c15b1d3ce&btn_type=ss&btn_ref=srctok-64d1446c15b1d3ce&linkCode=ll2&tag=rak0d69-21&linkId=9ffbdc53927ff2062fadb7a0d6c0ca05&ref_=as_li_ss_tl" },
+      { title: "Storage bed (alternative)", note: "Bed frame with built-in storage.", url: "https://www.amazon.co.uk/Upholstered-Ottoman-Hydraulic-Storage-Headboard/dp/B0DX6ZYNGN?crid=1F5FV6PGOJF25&dib=eyJ2IjoiMSJ9.r8zgeQTVqHxK7-Ew9tdZXC-xb1htaMCAcLFnf6CIOrpnJHa_vx8dp-9QzKGQYOymhMmWFxDoYY4806X41OAdlHiPuRXAbhd1frR4w2VvBb4EQd36u34gclLA8mC_tzU1rWdivyf9jcbceOSTCaDB2x3C9jGf6jzogJzn2ngrDWA5zCy6srwsEFEdHMu32YBNhlra3vokuYfc_v8tUix5_WwE67IjmkzNwiVVsk5lSJPEGFIaBYnBBBnxsIC5lSz8ST25DSHseVh2uownZfB5L8jWMGZmmN6vNTv6027iDmQ.6nz7Vt6yUE8L2lw4K0j9N61AQSIZNQeSAGg9qg4_nAo&dib_tag=se&keywords=dunelm%2Bascor%2Bstorage%2Bbed%2Bgrey&qid=1791284314&sprefix=dunelm%2Bascor%2Bstorage%2Bbed%2Bgre%2Caps%2C124&sr=8-1&th=1&ascsubtag=srctok-505f4b0f817ae115&btn_type=ss&btn_ref=srctok-505f4b0f817ae115&linkCode=ll2&tag=rak0d69-21&linkId=c7b10081c09a12190b22cb0558bf7d5d&ref_=as_li_ss_tl" },
+      { title: "Small plant", note: "A smaller plant for the desk or shelf.", url: "https://www.amazon.co.uk/HeeTeem-Artificial-Hanging-Plants-Pack/dp/B0H4L3TWMH?crid=E3Y94DLA9V1N&dib=eyJ2IjoiMSJ9.tx7HElke5uioK0mQ4uzwti-4F-KOeXXXy73AS6H_oKsovro6io3fn3_E7psivgs8nktRKth3uX2mJXIhoMZFRJ6a4nMJ1JeiLq7gJYsYMMdh-KlSjjyaAKmTU1fPsFJEjjhBFERxxjpWxinyWzJndN3T-xxTorycQrAcNxGeNi4ZaiO3xzv4vvLE32VNq0DH7FbH_10_rNUW_biIIHr91BIvmdwMJXp685QnZrzGPUjrJ2EaMmAiS3RN4NZZsBixN_iHDw9fLrwdnT_mMuef_hBufDdgAQbsZ7lu_q6SHcw.oip6559NlBdY1DWSTFiyGKiKnQk-t4lQMP1KK0t3jUc&dib_tag=se&keywords=plant&qid=1791284419&sprefix=plan%2Caps%2C138&sr=8-60&th=1&ascsubtag=srctok-58a2919d4ebebc83&btn_type=ss&btn_ref=srctok-58a2919d4ebebc83&linkCode=ll2&tag=rak0d69-21&linkId=cd0466fbbd1515af0479fa31dd2eb649&ref_=as_li_ss_tl" },
+      { title: "Google smart clock", note: "Google Nest smart speaker in light grey.", url: "https://www.amazon.co.uk/dp/B07THN6736?&linkCode=ll2&tag=rak0d69-21&linkId=442123d87a9ac55d811e75a333062eca&ref_=as_li_ss_tl" },
+      { title: "Philips HUE Light TV", note: "Philips 50 inch Ambilight TV in black.", url: "https://www.amazon.co.uk/dp/B0HLLB43R5?th=1&linkCode=ll2&tag=rak0d69-21&linkId=03ceb83a819d87ba4486eb7aa2ca920f&ref_=as_li_ss_tl" },
       { title: "Ikea wardrobe", note: "Used for storage. Updated video coming soon on the build and requirements.", url: "" },
-      { title: "Frame light", note: "Ambient lighting.", url: "https://link.amazon/B0eogoGBx?tag=rak0d69-21" },
-      { title: "Cable covers", note: "Keeps desk cables tidy.", url: "https://link.amazon/A0iJdBeFv?tag=rak0d69-21" }
+      { title: "Frame light", note: "Ambient lighting.", url: "https://www.amazon.co.uk/Kitloo-Picture-Rechargeable-Operated-Pictures/dp/B0G7VVXHD7?crid=3AITG6X94106C&dib=eyJ2IjoiMSJ9.ljxsXTrmdD9xUh0Kr5y3dcIzMSTkcVSUz5t-s3gmTzIDZy_tLs4Ov4dYFctVam3P1diUp4QHoPjfEurDE56GqKo3aXeYjh-NxJ9RSTrKJ7iUwxFVCQevL0pauA1I1WppD29wL-cmo5YIRfsDZTA86dWDEo2hEnKrBctGjS13YRT5BDaLQJonroe4-gemqefBfrrRvG7iTbuFKWKfk9LZ_BvbNozhTqdH0l7B9voaBpnHmXM_gZ8qd5kkdLWMph7UlooeMwngdcXx0I_95YAy3XkOQ-0Rp526voWR1PTXx_Q.fh4EZU3QvTTAeA5rYL50eNG6wA9pyr81c1Do_Oo5nYo&dib_tag=se&keywords=frame+light&qid=1791284897&s=kitchen&sprefix=frame+ligh%2Ckitchen%2C140&sr=1-2-spons&aref=NvNe1eqixC&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&psc=1&ascsubtag=srctok-409de01d3156a64b&btn_type=ss&btn_ref=srctok-409de01d3156a64b&linkCode=ll2&tag=rak0d69-21&linkId=eeaee2146f98be54232c529a5a105256&ref_=as_li_ss_tl" },
+      { title: "Cable covers", note: "Keeps desk cables tidy.", url: "https://www.amazon.co.uk/gp/aw/d/B0DPC6YDFT?pd_rd_plhdr=t&hsa_cr_id=0&qid=1791285002&sr=1-1-941ebe59-d25b-49d0-b214-12cc5b66c90f&i=kitchen&aref=cDmszLZGU2&_encoding=UTF8&pd_rd_w=zwDkH&content-id=amzn1.sym.c8974dda-a96b-4856-ba25-1e9ee05c8882%3Aamzn1.sym.c8974dda-a96b-4856-ba25-1e9ee05c8882&pf_rd_p=c8974dda-a96b-4856-ba25-1e9ee05c8882&pf_rd_r=E5XYQHA6ACT0YHTSDMVX&pd_rd_wg=RnAc4&pd_rd_r=cdaa7899-f5b7-48b9-afba-8c1d6e04b151&th=1&linkCode=ll2&tag=rak0d69-21&linkId=a4be61bc5deac9ce6957a597df360ddb&ref_=as_li_ss_tl" }
     ]
   },
   {
@@ -169,7 +171,7 @@ const CATEGORIES = [
     blurb: "Things that make the place nicer",
     tint: "var(--sand)",
     items: [
-      { title: "Polar radiator spray paint", note: "Heat-resistant gloss white, 400ml. 3-in-1 primer, undercoat and topcoat for radiators, pipes and towel rails, heat-resistant to 170°C. The one I actually use.", url: "https://amzn.eu/d/00UzInTY?tag=rak0d69-21" }
+      { title: "Polar radiator spray paint", note: "The perfect easy DIY solution to make an old heater look brand new.", url: "https://www.amazon.co.uk/dp/B093TCHMH6?social_share=cm_sw_r_ud_dp_G8S6RY995QHF5RDX8BV5&th=1&linkCode=ll2&tag=rak0d69-21&linkId=cbe1ef4ebb43588f2aff608e5c2dd76b&ref_=as_li_ss_tl", video: "https://www.tiktok.com/@r44akk/video/7690186572783717654?is_from_webapp=1&sender_device=pc&web_id=7636324287666210326" }
     ]
   },
   {
@@ -279,6 +281,15 @@ CATEGORIES.forEach(cat => {
         box.className = "static";
         box.appendChild(inner);
         li.appendChild(box);
+      }
+      if (item.video) {
+        const v = document.createElement("a");
+        v.className = "video-link";
+        v.href = item.video;
+        v.target = "_blank";
+        v.rel = "noopener";
+        v.textContent = "Watch the video on TikTok";
+        li.appendChild(v);
       }
       ul.appendChild(li);
     });
