@@ -89,7 +89,8 @@
   .items .row-title { display: block; }
   .items .row-note { display: block; margin-top: 2px; font-weight: 400; font-size: 13.5px; color: var(--ink-soft); }
   .items .static { padding: 13px 14px; border-radius: 14px; border: 1.5px dashed var(--line); font-weight: 600; font-size: 15.5px; }
-  .items a.video-link { margin-top: 6px; justify-content: center; background: transparent; border: 1.5px solid var(--ink); font-size: 14px; padding: 10px 14px; }
+  .items a.video-link { margin-top: 0; justify-content: center; background: transparent; border: 1.5px solid var(--ink); font-size: 14px; padding: 10px 14px; }
+  .items .row + a.video-link { margin-top: 6px; }
   .items a.video-link:hover { background: var(--ink); color: var(--bg); }
   .price { flex: none; font-weight: 400; color: var(--ink-soft); font-size: 14px; }
   .empty { padding: 0 22px 18px; margin: 0; color: var(--ink-soft); font-size: 14px; }
@@ -138,12 +139,13 @@ const SOCIALS = {
 // Added automatically to every amazon.* link below
 const AMAZON_TAG = "rak0d69-21";
 
-// Add products by copying a line. "note" is optional. Leave url empty for an item with no link yet. Add video: "https://..." to show a "Watch the video" button under an item.
+// Add products by copying a line. "note" is optional. Leave url empty for an item with no link yet. Add video: "https://..." to an item (or to a category) to show a "Watch the video" button.
 const CATEGORIES = [
   {
     title: "Rak's Room",
     blurb: "Desk, office and room setup",
     tint: "var(--sage)",
+    video: "https://vm.tiktok.com/ZN8SJYUJq/",
     items: [
       { title: "Electric standing desk", note: "Electric height-adjustable standing desk for the home office.", url: "https://www.amazon.co.uk/dp/B07K414CSX?th=1&linkCode=ll2&tag=rak0d69-21&linkId=e73e23cc095cf1c4ba0e1df1240dd065&ref_=as_li_ss_tl" },
       { title: "Wall panelling", note: "Adds texture to the room.", url: "https://www.amazon.co.uk/dp/B0CBZ2RKBS?th=1&linkCode=ll2&tag=rak0d69-21&linkId=6966e85b99b464dc227387a128e29558&ref_=as_li_ss_tl" },
@@ -255,6 +257,17 @@ CATEGORIES.forEach(cat => {
   if (cat.items.length) {
     const ul = document.createElement("ul");
     ul.className = "items";
+    if (cat.video) {
+      const li = document.createElement("li");
+      const v = document.createElement("a");
+      v.className = "video-link";
+      v.href = cat.video;
+      v.target = "_blank";
+      v.rel = "noopener";
+      v.textContent = "Watch the video on TikTok";
+      li.appendChild(v);
+      ul.appendChild(li);
+    }
     cat.items.forEach(item => {
       const li = document.createElement("li");
       const inner = document.createElement("span");
