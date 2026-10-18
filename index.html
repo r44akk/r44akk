@@ -17,6 +17,7 @@
     --sand: #ead9c2;
     --amber: #ecc67f;
     --rose: #e6c4cd;
+    --mist: #c9d7e6;
     --line: rgba(35, 30, 48, .14);
     --font: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   }
@@ -141,6 +142,15 @@ const AMAZON_TAG = "rak0d69-21";
 
 // Add products by copying a line. "note" is optional. Leave url empty for an item with no link yet. Add video: "https://..." to an item (or to a category) to show a "Watch the video" button.
 const CATEGORIES = [
+  {
+    title: "Snowdonia hike (24th)",
+    blurb: "Climb for 60 Snowdonia challenge",
+    tint: "var(--mist)",
+    items: [
+      { title: "Donate ❤️", note: "", url: "https://raise.as-suffa.org/fundraiser/climb-for-60-snowdonia-challenge-5" },
+      { title: "Entry", note: "", url: "https://relief.as-suffa.org/appeal/snowdon-climb-for-60-entry-fee/" }
+    ]
+  },
   {
     title: "Rak's Room",
     blurb: "Desk, office and room setup",
@@ -284,7 +294,7 @@ CATEGORIES.forEach(cat => {
         const a = document.createElement("a");
         a.href = tagged(item.url);
         a.target = "_blank";
-        a.rel = "noopener sponsored";
+        a.rel = /(^|\.)amazon\./i.test(a.hostname) || /^(link\.amazon|amzn\.)/i.test(a.hostname) ? "noopener sponsored" : "noopener";
         a.appendChild(inner);
         if (item.price) {
           const p = document.createElement("span"); p.className = "price"; p.textContent = item.price;
