@@ -103,60 +103,128 @@
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
-  /* ---------- Motion ---------- */
+  /* =========================================================
+     MOTION LAYER (light version: transform + opacity only)
+     ========================================================= */
   html { scroll-behavior: smooth; }
   main { position: relative; z-index: 1; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-  /* slow ambient colour drift behind everything */
-  body::before {
-    content: ""; position: fixed; inset: -20%; z-index: 0; pointer-events: none;
+  /* ---------- soft background: plain gradients, no blur filters ---------- */
+  .bg {
+    position: fixed; inset: -12%; z-index: 0; pointer-events: none;
     background:
-      radial-gradient(40% 35% at 18% 18%, rgba(207, 218, 203, .65), transparent 70%),
-      radial-gradient(35% 30% at 86% 30%, rgba(236, 198, 127, .38), transparent 70%),
-      radial-gradient(42% 36% at 60% 92%, rgba(230, 196, 205, .55), transparent 70%);
-    animation: drift 30s ease-in-out infinite alternate;
-    will-change: transform;
+      radial-gradient(38% 32% at 16% 14%, rgba(207, 218, 203, .75), transparent 70%),
+      radial-gradient(34% 30% at 88% 28%, rgba(236, 198, 127, .38), transparent 70%),
+      radial-gradient(40% 34% at 62% 92%, rgba(230, 196, 205, .6), transparent 70%),
+      radial-gradient(30% 26% at 10% 78%, rgba(201, 215, 230, .6), transparent 70%);
   }
-  @keyframes drift { to { transform: translate3d(4%, 3%, 0) scale(1.08); } }
+  .cursor-glow { display: none; }
 
-  /* staged entrance */
-  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes pop  { from { opacity: 0; transform: scale(.88); }      to { opacity: 1; transform: none; } }
-  .reveal     { animation: rise .85s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i, 0) * 75ms + 60ms); }
-  .reveal-pop { animation-name: pop; animation-duration: .9s; }
+  /* ---------- entrance (opacity + transform only) ---------- */
+  @keyframes rise   { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes pop    { from { opacity: 0; transform: scale(.86); }      to { opacity: 1; transform: none; } }
+  @keyframes letter { from { opacity: 0; transform: translateY(.4em); } to { opacity: 1; transform: none; } }
+  .reveal { animation: rise .7s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i, 0) * 55ms + 40ms); }
+  .reveal.reveal-pop { animation-name: pop; animation-duration: .75s; }
+  .ch { display: inline-block; animation: letter .7s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(200ms + var(--k, 0) * 50ms); }
+  .w  { display: inline-block; animation: rise .7s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(420ms + var(--k, 0) * 30ms); }
 
-  /* cards */
-  details { overflow: hidden; transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s ease; }
+  /* ---------- avatar: static soft ring ---------- */
+  .avatar-wrap { position: relative; width: 112px; height: 112px; margin: 0 auto 16px; animation: pop .8s cubic-bezier(.22, 1.2, .36, 1) backwards; }
+  .avatar { margin: 0; position: relative; z-index: 1; }
+  .avatar-wrap::before {
+    content: ""; position: absolute; inset: -7px; border-radius: 50%;
+    background: conic-gradient(#231e30, #7d6fa8, #c9bfe0, #7d6fa8, #231e30);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  }
+
+  /* ---------- social buttons ---------- */
+  .socials a {
+    position: relative; overflow: hidden;
+    transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(var(--s, 1));
+    transition: background .25s ease, color .25s ease, transform .4s cubic-bezier(.22, 1, .36, 1);
+  }
+  .socials a:active { transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(.92); }
+
+  /* ---------- category cards ---------- */
+  details { position: relative; overflow: hidden; isolation: isolate; }
+  details::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0;
+    background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, .5), transparent 62%);
+    transition: opacity .4s ease;
+  }
+  details summary { position: relative; z-index: 1; overflow: hidden; }
   details[open] summary { padding-bottom: 20px; }
-  .items { margin-top: -8px; }
+  .items { position: relative; z-index: 1; margin-top: -8px; }
+  .empty { position: relative; z-index: 1; }
   .chev { transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
-  details:has(summary:active):not([open]) { transform: scale(.992); }
-  @media (hover: hover) {
-    details:not([open]):hover { transform: translateY(-2px); box-shadow: 0 10px 24px -14px rgba(35, 30, 48, .45); }
-  }
+  details[data-state="open"] .chev   { transform: rotate(180deg); }
+  details[data-state="closed"] .chev { transform: rotate(0deg); }
 
-  /* socials + rows */
-  .socials a { transition: background .25s ease, color .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1); }
-  .socials a:active { transform: scale(.93); }
-  .items a { transition: background .25s ease, color .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1); }
-  .items a:active { transform: scale(.985); }
-  @media (hover: hover) {
-    .socials a:hover { transform: translateY(-3px); }
+  /* ---------- rows ---------- */
+  .items a { position: relative; overflow: hidden; transition: background .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1); }
+  .items a:active { transform: scale(.98); }
+  .items .row { flex: 1; min-width: 0; }
+
+  /* ---------- tap ripple ---------- */
+  .ripple {
+    position: absolute; border-radius: 50%; pointer-events: none; z-index: 0;
+    background: rgba(255, 255, 255, .5); transform: scale(0);
+    animation: ripple .55s ease-out forwards;
+  }
+  @keyframes ripple { to { transform: scale(1); opacity: 0; } }
+
+  /* =========================================================
+     DESKTOP ONLY (mouse): extras that would be wasteful on phones
+     ========================================================= */
+  @media (hover: hover) and (pointer: fine) {
+    .bg { animation: drift 45s ease-in-out infinite alternate; }
+    @keyframes drift { to { transform: translate3d(2.5%, 2%, 0) scale(1.05); } }
+
+    .avatar-wrap { animation: pop .8s cubic-bezier(.22, 1.2, .36, 1) backwards, float 8s ease-in-out 1.2s infinite alternate; }
+    .avatar-wrap::before { animation: spin 14s linear infinite; }
+    @keyframes spin  { to { transform: rotate(360deg); } }
+    @keyframes float { to { translate: 0 -4px; } }
+
+    .cursor-glow {
+      display: block; position: fixed; left: 0; top: 0; width: 380px; height: 380px; border-radius: 50%;
+      pointer-events: none; z-index: 0; opacity: 0; transition: opacity .8s ease; will-change: transform;
+      background: radial-gradient(circle, rgba(236, 198, 127, .3), rgba(230, 196, 205, .14) 45%, transparent 70%);
+    }
+
+    details {
+      transform: perspective(900px) translateY(var(--ty, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform .6s cubic-bezier(.22, 1, .36, 1), box-shadow .4s ease;
+    }
+    details:hover { box-shadow: 0 14px 28px -20px rgba(35, 30, 48, .45); }
+    details:hover::before { opacity: 1; }
+
+    .items a { transition: background .25s ease, transform .4s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease; }
     .items a:not(.video-link):hover { transform: translateX(3px); }
+    .items a:not(.video-link)::after {
+      content: "\2197"; flex: none; font-weight: 700; opacity: 0; transform: translate(-6px, 4px);
+      transition: opacity .25s ease, transform .4s cubic-bezier(.22, 1, .36, 1);
+    }
+    .items a:not(.video-link):hover::after { opacity: .6; transform: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    body::before { animation: none; }
-    .reveal, .reveal-pop { animation: none; }
+    .bg, .avatar-wrap, .avatar-wrap::before { animation: none !important; }
+    .reveal, .ch, .w { animation: none !important; }
+    .cursor-glow { display: none !important; }
     details, .chev, .socials a, .items a { transition: none !important; }
   }
 </style>
 </head>
 <body>
+<div class="bg" aria-hidden="true"></div>
+<div class="cursor-glow" id="glow" aria-hidden="true"></div>
 <main>
   <header>
-    <div class="avatar" id="avatar"></div>
+    <div class="avatar-wrap" id="avatarWrap"><div class="avatar" id="avatar"></div></div>
     <h1 id="name"></h1>
     <p class="handle" id="handle"></p>
     <p class="bio" id="bio"></p>
@@ -304,8 +372,9 @@ const chevron = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="curre
 
 CATEGORIES.forEach((cat, idx) => {
   const d = document.createElement("details");
+  d.dataset.state = "closed";
   d.classList.add("reveal");
-  d.style.setProperty("--i", 5 + idx);
+  d.style.setProperty("--i", 9 + idx);
   d.style.setProperty("--tint", cat.tint);
 
   const s = document.createElement("summary");
@@ -379,51 +448,156 @@ CATEGORIES.forEach((cat, idx) => {
   catsEl.appendChild(d);
 });
 
-// ---------- Motion ----------
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+// =========================================================
+// MOTION LAYER (light)
+// =========================================================
+const RMQ  = window.matchMedia("(prefers-reduced-motion: reduce)");
+const FINE = window.matchMedia("(hover: hover) and (pointer: fine)");
 const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
-// header entrance
-["avatar", "name", "handle", "bio", "socials"].forEach((id, i) => {
-  const el = document.getElementById(id);
-  el.classList.add(id === "avatar" ? "reveal-pop" : "reveal", "reveal");
+// ---- entrance ----
+function setReveal(el, i, pop) {
+  el.classList.add("reveal");
+  if (pop) el.classList.add("reveal-pop");
   el.style.setProperty("--i", i);
-});
+}
+setReveal(document.getElementById("handle"), 4);
+document.querySelectorAll(".socials li").forEach((li, n) => setReveal(li, 7 + n, true));
+setReveal(document.querySelector("footer p"), 9 + CATEGORIES.length + 1);
 
-// smooth open / close for each category
+function splitText(el, mode) {
+  const text = el.textContent;
+  el.textContent = "";
+  const sr = document.createElement("span"); sr.className = "sr"; sr.textContent = text;
+  const vis = document.createElement("span"); vis.setAttribute("aria-hidden", "true");
+  if (mode === "letters") {
+    [...text].forEach((c, k) => {
+      const s = document.createElement("span"); s.className = "ch"; s.style.setProperty("--k", k);
+      s.textContent = c === " " ? " " : c; vis.appendChild(s);
+    });
+  } else {
+    text.split(/\s+/).forEach((word, k, arr) => {
+      const s = document.createElement("span"); s.className = "w"; s.style.setProperty("--k", k);
+      s.textContent = word; vis.appendChild(s);
+      if (k < arr.length - 1) vis.appendChild(document.createTextNode(" "));
+    });
+  }
+  el.append(sr, vis);
+}
+if (!RMQ.matches) {
+  splitText(document.getElementById("name"), "letters");
+  splitText(document.getElementById("bio"), "words");
+}
+
+// ---- mouse-only extras (cursor glow + magnetic icons), one rAF loop that sleeps when idle ----
+if (FINE.matches && !RMQ.matches) {
+  const glow = document.getElementById("glow");
+  const icons = [...document.querySelectorAll(".socials a")];
+  let tx = 0, ty = 0, cx = 0, cy = 0, seen = false, raf = null;
+
+  function tick() {
+    raf = null;
+    cx += (tx - cx) * 0.14; cy += (ty - cy) * 0.14;
+    glow.style.transform = "translate3d(" + (cx - 190) + "px," + (cy - 190) + "px,0)";
+
+    const rects = icons.map(a => a.parentElement.getBoundingClientRect());   // read first
+    icons.forEach((a, i) => {                                                // then write
+      const r = rects[i];
+      const dx = tx - (r.left + r.width / 2), dy = ty - (r.top + r.height / 2);
+      const dist = Math.hypot(dx, dy), reach = 70;
+      if (dist < reach) {
+        const pull = 1 - dist / reach;
+        a.style.setProperty("--tx", (dx * 0.25 * pull).toFixed(1) + "px");
+        a.style.setProperty("--ty", (dy * 0.25 * pull).toFixed(1) + "px");
+        a.style.setProperty("--s", (1 + 0.08 * pull).toFixed(3));
+      } else {
+        a.style.removeProperty("--tx"); a.style.removeProperty("--ty"); a.style.removeProperty("--s");
+      }
+    });
+    if (Math.abs(tx - cx) > 0.5 || Math.abs(ty - cy) > 0.5) raf = requestAnimationFrame(tick);
+  }
+
+  window.addEventListener("pointermove", e => {
+    if (e.pointerType !== "mouse") return;
+    tx = e.clientX; ty = e.clientY;
+    if (!seen) { seen = true; cx = tx; cy = ty; glow.style.opacity = 1; }
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+}
+
+// ---- cards ----
 document.querySelectorAll("details").forEach(d => {
   const summary = d.querySelector("summary");
   let anim = null;
   let target = d.open;
 
+  function resetTilt() { ["--rx", "--ry", "--ty"].forEach(p => d.style.removeProperty(p)); }
+
+  if (FINE.matches && !RMQ.matches) {       // spotlight + gentle tilt (mouse only)
+    let pending = null;
+    d.addEventListener("pointermove", e => {
+      if (e.pointerType !== "mouse") return;
+      const first = !pending;
+      pending = e;
+      if (!first) return;
+      requestAnimationFrame(() => {
+        const ev = pending; pending = null;
+        const r = d.getBoundingClientRect();
+        const x = ev.clientX - r.left, y = ev.clientY - r.top;
+        d.style.setProperty("--mx", x + "px"); d.style.setProperty("--my", y + "px");
+        if (!target) {
+          d.style.setProperty("--ry", ((x / r.width - 0.5) * 5).toFixed(2) + "deg");
+          d.style.setProperty("--rx", (-(y / r.height - 0.5) * 5).toFixed(2) + "deg");
+          d.style.setProperty("--ty", "-2px");
+        }
+      });
+    });
+    d.addEventListener("pointerleave", resetTilt);
+  }
+
   summary.addEventListener("click", e => {
-    if (reduceMotion.matches) return; // fall back to the native instant toggle
+    if (RMQ.matches) { d.dataset.state = d.open ? "closed" : "open"; return; }
     e.preventDefault();
     target = !target;
+    d.dataset.state = target ? "open" : "closed";
+    resetTilt();
 
-    const from = d.offsetHeight;      // current height, even mid-animation
+    const from = d.offsetHeight;
     if (anim) anim.cancel();
     if (target) d.open = true;
     const to = target ? d.offsetHeight : summary.offsetHeight;
 
-    anim = d.animate(
+    const mine = anim = d.animate(
       { height: [from + "px", to + "px"] },
-      { duration: 460, easing: EASE }
+      { duration: target ? 500 : 360, easing: EASE }
     );
-    const mine = anim;
-    mine.onfinish = () => {
-      if (anim === mine) { if (!target) d.open = false; anim = null; }
-    };
+    mine.onfinish = () => { if (anim === mine) { if (!target) d.open = false; anim = null; } };
 
     if (target) {
       d.querySelectorAll(".items > li, .empty").forEach((el, i) => {
+        if (i > 8) return;                       // only the first few items animate; the rest just appear
         el.animate(
           { opacity: [0, 1], transform: ["translateY(10px)", "translateY(0)"] },
-          { duration: 480, delay: 70 + Math.min(i, 10) * 35, easing: EASE, fill: "backwards" }
+          { duration: 420, delay: 60 + i * 30, easing: EASE, fill: "backwards" }
         );
       });
+      const top = d.getBoundingClientRect().top;
+      if (top > innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - 24, behavior: "smooth" });
     }
   });
+});
+
+// ---- tap ripple ----
+document.addEventListener("pointerdown", e => {
+  if (RMQ.matches) return;
+  const t = e.target.closest("summary, .items a, .socials a");
+  if (!t) return;
+  const r = t.getBoundingClientRect(), size = Math.max(r.width, r.height) * 2;
+  const s = document.createElement("span");
+  s.className = "ripple";
+  s.style.cssText = "width:" + size + "px;height:" + size + "px;left:" + (e.clientX - r.left - size / 2) + "px;top:" + (e.clientY - r.top - size / 2) + "px";
+  t.appendChild(s);
+  s.addEventListener("animationend", () => s.remove());
 });
 </script>
 </body>
