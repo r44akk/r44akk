@@ -102,6 +102,55 @@
   footer p { margin: 0 auto; max-width: 34ch; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  /* ---------- Motion ---------- */
+  html { scroll-behavior: smooth; }
+  main { position: relative; z-index: 1; }
+
+  /* slow ambient colour drift behind everything */
+  body::before {
+    content: ""; position: fixed; inset: -20%; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(40% 35% at 18% 18%, rgba(207, 218, 203, .65), transparent 70%),
+      radial-gradient(35% 30% at 86% 30%, rgba(236, 198, 127, .38), transparent 70%),
+      radial-gradient(42% 36% at 60% 92%, rgba(230, 196, 205, .55), transparent 70%);
+    animation: drift 30s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes drift { to { transform: translate3d(4%, 3%, 0) scale(1.08); } }
+
+  /* staged entrance */
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes pop  { from { opacity: 0; transform: scale(.88); }      to { opacity: 1; transform: none; } }
+  .reveal     { animation: rise .85s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i, 0) * 75ms + 60ms); }
+  .reveal-pop { animation-name: pop; animation-duration: .9s; }
+
+  /* cards */
+  details { overflow: hidden; transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s ease; }
+  details[open] summary { padding-bottom: 20px; }
+  .items { margin-top: -8px; }
+  .chev { transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
+  details:has(summary:active):not([open]) { transform: scale(.992); }
+  @media (hover: hover) {
+    details:not([open]):hover { transform: translateY(-2px); box-shadow: 0 10px 24px -14px rgba(35, 30, 48, .45); }
+  }
+
+  /* socials + rows */
+  .socials a { transition: background .25s ease, color .25s ease, transform .35s cubic-bezier(.22, 1, .36, 1); }
+  .socials a:active { transform: scale(.93); }
+  .items a { transition: background .25s ease, color .25s ease, transform .3s cubic-bezier(.22, 1, .36, 1); }
+  .items a:active { transform: scale(.985); }
+  @media (hover: hover) {
+    .socials a:hover { transform: translateY(-3px); }
+    .items a:not(.video-link):hover { transform: translateX(3px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    body::before { animation: none; }
+    .reveal, .reveal-pop { animation: none; }
+    details, .chev, .socials a, .items a { transition: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -253,8 +302,10 @@ Object.keys(SOCIALS).forEach(key => {
 const catsEl = document.getElementById("cats");
 const chevron = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
 
-CATEGORIES.forEach(cat => {
+CATEGORIES.forEach((cat, idx) => {
   const d = document.createElement("details");
+  d.classList.add("reveal");
+  d.style.setProperty("--i", 5 + idx);
   d.style.setProperty("--tint", cat.tint);
 
   const s = document.createElement("summary");
@@ -326,6 +377,53 @@ CATEGORIES.forEach(cat => {
     d.appendChild(p);
   }
   catsEl.appendChild(d);
+});
+
+// ---------- Motion ----------
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+// header entrance
+["avatar", "name", "handle", "bio", "socials"].forEach((id, i) => {
+  const el = document.getElementById(id);
+  el.classList.add(id === "avatar" ? "reveal-pop" : "reveal", "reveal");
+  el.style.setProperty("--i", i);
+});
+
+// smooth open / close for each category
+document.querySelectorAll("details").forEach(d => {
+  const summary = d.querySelector("summary");
+  let anim = null;
+  let target = d.open;
+
+  summary.addEventListener("click", e => {
+    if (reduceMotion.matches) return; // fall back to the native instant toggle
+    e.preventDefault();
+    target = !target;
+
+    const from = d.offsetHeight;      // current height, even mid-animation
+    if (anim) anim.cancel();
+    if (target) d.open = true;
+    const to = target ? d.offsetHeight : summary.offsetHeight;
+
+    anim = d.animate(
+      { height: [from + "px", to + "px"] },
+      { duration: 460, easing: EASE }
+    );
+    const mine = anim;
+    mine.onfinish = () => {
+      if (anim === mine) { if (!target) d.open = false; anim = null; }
+    };
+
+    if (target) {
+      d.querySelectorAll(".items > li, .empty").forEach((el, i) => {
+        el.animate(
+          { opacity: [0, 1], transform: ["translateY(10px)", "translateY(0)"] },
+          { duration: 480, delay: 70 + Math.min(i, 10) * 35, easing: EASE, fill: "backwards" }
+        );
+      });
+    }
+  });
 });
 </script>
 </body>
